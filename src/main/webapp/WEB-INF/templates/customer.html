@@ -8,5 +8,13 @@
 <p th:utext="#{home.welcome(${userName})}">
   Welcome to our grocery store, Sebastian Pepper!
 </p>
+
+<p>Today is: <span th:text="${today}">13 february 2011</span>.</p>
+
+
+<div th:object="${session.user}">
+    <p>Name: <span th:text="*{name}">Sebastian</span>.</p>
+    <p>Age: <span th:text="*{age}">Pepper</span>.</p>
+</div>
 </body>
 </html>
