@@ -1,10 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Good Thymes Virtual Grocery</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
 </head>
 <body>
 <p th:text="#{home.welcome}">Welcome to our grocerystore!</p>
+
+<form th:action="@{/create-user}" th:object="${user}" method="post">
+
+     Username:   <input type="text" th:field="*{username}"/>
+     Age: <input type="number" th:field="*{age}"/>
+     Gender:
+    <select th:field="*{gender}">
+        <option th:each="type : ${allGenders}"
+                th:value="${type}"
+                th:text="${type.name}">Không xác định</option>
+    </select>
+    <button type="submit">Submit</button>
+</form>
+
+<form th:action="@{/upload-file}" th:object="${upload}" method="post" enctype="multipart/form-data">
+    <input type="file" th:field="*{file}"/>
+    <button type="submit">Submit</button>
+</form>
 </body>
 </html>
