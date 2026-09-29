@@ -1,31 +1,33 @@
 package codegym.vn.repository;
 
 import codegym.vn.entity.Customer;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Objects;
 
 @Repository
 @RequiredArgsConstructor
 public class CustomerRepositoryImpl implements CustomerRepository{
-    private final SessionFactory sessionFactory;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public List<Customer> findAll() {
-        try(EntityManager entityManager = sessionFactory.createEntityManager()){
+//        try(EntityManager entityManager = sessionFactory.createEntityManager()){
             String queryStr = "SELECT c FROM Customer AS c";
             TypedQuery<Customer> query = entityManager.createQuery(queryStr, Customer.class);
             return query.getResultList();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     @Override
@@ -37,7 +39,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
         } else {
             origin = new Customer();
         }
-        try (Session session = sessionFactory.openSession()) {
+        try (Session session = entityManager.unwrap(Session.class)) {
             transaction = session.beginTransaction();
             origin.setUsername(customer.getUsername());
             origin.setEmail(customer.getEmail());
@@ -55,13 +57,13 @@ public class CustomerRepositoryImpl implements CustomerRepository{
 
     @Override
     public Customer findById(Long id) {
-        try(EntityManager entityManager = sessionFactory.createEntityManager()) {
+//        try(EntityManager entityManager = sessionFactory.createEntityManager()) {
             String queryStr = "SELECT c FROM Customer AS c WHERE c.id = :id";
             TypedQuery<Customer> query = entityManager.createQuery(queryStr, Customer.class);
             query.setParameter("id", id);
             return query.getSingleResult();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
     }
 }

@@ -1,16 +1,23 @@
 package codegym.vn;
 
-import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 import java.util.List;
 
 @Configuration
@@ -41,11 +48,42 @@ public class AppConfig implements WebMvcConfigurer {
         return multipartResolver;
     }
 
+//    @Bean
+//    public SessionFactory sessionFactory() {
+//        return new org.hibernate.cfg.Configuration()
+//                .configure("hibernate.conf.xml")
+//                .buildSessionFactory();
+//    }
+
     @Bean
-    public SessionFactory sessionFactory() {
-        return new org.hibernate.cfg.Configuration()
-                .configure("hibernate.conf.xml")
-                .buildSessionFactory();
+    public DataSource dataSource(){
+        DriverManagerDataSource dataSource = new
+                DriverManagerDataSource();
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/hibernate-demo?serverTimezone=Asia/Ho_Chi_Minh&characterEncoding=UTF-8");
+        dataSource.setUsername( "web_app_admin" );
+        dataSource.setPassword( "123123aA@" );
+        return dataSource;
     }
+
+    @Bean
+    @Qualifier(value = "entityManager")
+    public EntityManager entityManager(EntityManagerFactory entityManagerFactory) {
+        return entityManagerFactory.createEntityManager();
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean emf
+                = new LocalContainerEntityManagerFactoryBean();
+        emf.setDataSource(dataSource());
+        emf.setPackagesToScan(new String[]{"codegym.vn.entity"});
+        JpaVendorAdapter vendorAdapter = new
+                HibernateJpaVendorAdapter();
+        emf.setJpaVendorAdapter(vendorAdapter);
+//        emf.setJpaProperties(additionalProperties());
+        return emf;
+    }
+
 
 }

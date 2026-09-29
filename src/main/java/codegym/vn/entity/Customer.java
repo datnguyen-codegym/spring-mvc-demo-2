@@ -2,9 +2,9 @@ package codegym.vn.entity;
 
 import codegym.vn.model.CustomerStatus;
 
-import jakarta.persistence.*;
 import lombok.Data;
 
+import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
