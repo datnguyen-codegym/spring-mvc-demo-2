@@ -2,9 +2,8 @@ package codegym.vn.repository;
 
 import codegym.vn.entity.Customer;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,28 +30,20 @@ public class CustomerRepositoryImpl implements CustomerRepository{
     }
 
     @Override
+    @Transactional
     public void save(Customer customer) {
-        Transaction transaction = null;
         Customer origin;
         if (Objects.nonNull(customer.getId())) {
             origin = findById(customer.getId());
         } else {
             origin = new Customer();
         }
-        try (Session session = entityManager.unwrap(Session.class)) {
-            transaction = session.beginTransaction();
-            origin.setUsername(customer.getUsername());
-            origin.setEmail(customer.getEmail());
-            origin.setStatus(customer.getStatus());
-            origin.setBirthday(customer.getBirthday());
-            session.saveOrUpdate(origin);
-            transaction.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (transaction != null) {
-                transaction.rollback();
-            }
-        }
+        origin.setUsername(customer.getUsername());
+        origin.setEmail(customer.getEmail());
+        origin.setStatus(customer.getStatus());
+        origin.setBirthday(customer.getBirthday());
+        entityManager.persist(origin);
+        throw new IllegalArgumentException();
     }
 
     @Override
