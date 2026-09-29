@@ -1,5 +1,6 @@
 package codegym.vn;
 
+import org.hibernate.SessionFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,5 +41,11 @@ public class AppConfig implements WebMvcConfigurer {
         return multipartResolver;
     }
 
+    @Bean
+    public SessionFactory sessionFactory() {
+        return new org.hibernate.cfg.Configuration()
+                .configure("hibernate.conf.xml")
+                .buildSessionFactory();
+    }
 
 }
