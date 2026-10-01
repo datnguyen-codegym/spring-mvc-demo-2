@@ -9,4 +9,6 @@ public interface CustomerService {
     List<Customer> getAll();
 
     void create(Customer customer);
+
+    List<Customer> findByName(String username);
 }

@@ -30,4 +30,9 @@ public class CustomerController {
     public void create(@RequestBody Customer customer) {
         customerService.create(customer);
     }
+
+    @GetMapping("/find-by-name")
+    public List<Customer> findByName(@RequestParam("username") String username) {
+        return customerService.findByName(username);
+    }
 }
