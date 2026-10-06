@@ -5,6 +5,7 @@ import codegym.vn.jpa_repo.CustomerJpaRepository;
 import codegym.vn.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class CustomerServiceImpl implements CustomerService{
 
 
     @Override
-    public void create(Customer customer) {
+    public void create(@Validated Customer customer) {
          customerRepository.save(customer);
     }
 

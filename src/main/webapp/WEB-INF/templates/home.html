@@ -11,9 +11,19 @@
 
 <form th:action="@{/create-user}" th:object="${user}" method="post">
 
-     Username:   <input type="text" th:field="*{username}"/>
-     Age: <input type="number" th:field="*{age}"/>
-     Gender:
+    <label> Username:
+         <input type="text" th:field="*{username}"/>
+        <span style="color: red"
+                th:if="${#fields.hasErrors('username')}"
+                th:errors="*{username}"
+
+        >
+        </span>
+    </label>
+    <label> Age:
+        <input type="number" th:field="*{age}"/>
+    </label>
+    Gender:
     <select th:field="*{gender}">
         <option th:each="type : ${allGenders}"
                 th:value="${type}"

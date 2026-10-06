@@ -6,12 +6,15 @@ import codegym.vn.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -28,9 +31,17 @@ public class HomeController {
     }
 
     @PostMapping("/create-user")
-    public String createUser(@ModelAttribute("user") User user        ,
-                             BindingResult bindingResult) {
-        return "result";
+//    @ResponseBody
+    public ModelAndView createUser(@Validated @ModelAttribute("user") User user        ,
+                             BindingResult bindingResult,
+                             ModelAndView modelAndView) {
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("home");
+            return modelAndView;
+        }
+
+        modelAndView.setViewName("result");
+        return modelAndView;
     }
 
     @PostMapping("/upload-file")

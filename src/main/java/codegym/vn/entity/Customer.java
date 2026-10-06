@@ -5,6 +5,7 @@ import codegym.vn.model.CustomerStatus;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 @Entity
@@ -23,6 +24,7 @@ public class Customer {
     private Date birthday;
 
     @Column(name = "email")
+    @NotNull
     private String email;
 
     @Column(

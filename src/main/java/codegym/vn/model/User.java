@@ -1,32 +1,28 @@
 package codegym.vn.model;
 
 
-public class User {
+import codegym.vn.utils.UsernameValidationUtils;
+import lombok.Data;
+import lombok.Getter;
+import org.springframework.context.ApplicationContext;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
+
+@Data
+public class User implements Validator {
     String username;
     int age;
     Gender gender;
 
-    public int getAge() {
-        return age;
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return User.class.isAssignableFrom(clazz);
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
+    @Override
+    public void validate(Object target, Errors errors) {
+        User phoneNumber = (User) target;
+        UsernameValidationUtils.mustBeVietnameseFirstname(errors, "usename", "usename.firstname.vietnam");
     }
 }
