@@ -17,7 +17,7 @@ public class UsernameValidationUtils extends ValidationUtils {
     public static void mustBeVietnameseFirstname(Errors errors, String field, String errorCode) {
         Assert.notNull(errors, "Errors object must not be null");
         Object value = errors.getFieldValue(field);
-        String defaultMessage = "";
+        String defaultMessage = "unknow.error";
 
         if (null != value
                 && StringUtils.hasLength(value.toString())
