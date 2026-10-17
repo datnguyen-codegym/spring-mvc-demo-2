@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<div th:fragment="userList" id="userList">
+    <table class="table table-striped" style="border: black">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.birthday}"></td>
+            <td th:text="${user.email}"></td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(users)}">
+            <td colspan="3">No users found</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+</body>
+</html>

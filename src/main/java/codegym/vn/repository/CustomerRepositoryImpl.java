@@ -43,7 +43,6 @@ public class CustomerRepositoryImpl implements CustomerRepository{
         origin.setStatus(customer.getStatus());
         origin.setBirthday(customer.getBirthday());
         entityManager.persist(origin);
-        throw new IllegalArgumentException();
     }
 
     @Override

@@ -12,9 +12,72 @@
 <p>Today is: <span th:text="${today}">13 february 2011</span>.</p>
 
 
-<div th:object="${session.user}">
-    <p>Name: <span th:text="*{name}">Sebastian</span>.</p>
-    <p>Age: <span th:text="*{age}">Pepper</span>.</p>
+<!--<div th:object="${session.user}">-->
+<!--    <p>Name: <span th:text="*{name}">Sebastian</span>.</p>-->
+<!--    <p>Age: <span th:text="*{age}">Pepper</span>.</p>-->
+<!--</div>-->
+
+<button id="loadCustomer" class="btn btn-primary"
+        th:data-url="@{/customer/customer-list-fragment}">
+    Load customers
+</button>
+
+<div id="customerListContainer">
+    <!-- AJAX fragment được chèn vào đây -->
 </div>
+
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
+<script>
+
+
+    // $(function () {
+    //     $("#loadCustomer").on("click", function () {
+    //         $.ajax({
+    //             url: $("#loadCustomer").data("url"),
+    //             type: "GET",
+    //             success: function (fragment) {
+    //                 $("#customerListContainer").html(fragment);
+    //             },
+    //             error: function (xhr) {
+    //                 console.error(xhr.responseText);
+    //                 $("#customerListContainer").text(
+    //                     "Không thể tải danh sách User."
+    //                 );
+    //             }
+    //         });
+    //     });
+    // });
+
+    document.addEventListener("DOMContentLoaded", () => {
+        document
+            .querySelector("#loadCustomer")
+            .addEventListener("click", async function () {
+                const url = this.dataset.url;
+                const container = document.querySelector("#customerListContainer");
+
+                container.textContent = "Loading...";
+
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error: ${response.status}`);
+                        }
+
+                        return response.text();
+                    })
+                    .then(fragment => {
+                        container.innerHTML = fragment;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        container.textContent = "Không thể tải danh sách Customer.";
+                    })
+                    .finally(() => {
+                        console.log("Request completed");
+                    });
+            });
+    });
+
+</script>
 </body>
 </html>

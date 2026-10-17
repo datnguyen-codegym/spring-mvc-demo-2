@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class Logging {
 
-    @Around(value = "executeBeforeAPI()")
-    public Object logging(ProceedingJoinPoint joinPoint) throws Throwable {
-        System.out.println("logging before execute API");
-        Object result = joinPoint.proceed();
-        System.out.println("logging after execute API");
-        return result;
-    }
+//    @Around(value = "executeBeforeAPI()")
+//    public Object logging(ProceedingJoinPoint joinPoint) throws Throwable {
+//        System.out.println("logging before execute API");
+//        Object result = joinPoint.proceed();
+//        System.out.println("logging after execute API");
+//        return result;
+//    }
 
     @Pointcut(value = "within(codegym.vn.controller.*)")
     public void executeBeforeAPI() {
