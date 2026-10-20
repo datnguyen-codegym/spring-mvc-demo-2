@@ -20,13 +20,19 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Locale;
 
 @Configuration
 @EnableWebMvc
@@ -47,7 +53,7 @@ public class AppConfig implements WebMvcConfigurer {
         ResourceBundleMessageSource messageSource =
                 new ResourceBundleMessageSource();
 
-        messageSource.setBasename("messages/home");
+        messageSource.setBasename("message");
         messageSource.setDefaultEncoding("UTF-8");
 
         return messageSource;
@@ -110,5 +116,36 @@ public class AppConfig implements WebMvcConfigurer {
         filter.setEncoding("UTF-8");
         filter.setForceEncoding(true);
         return filter;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setParamName("lang");
+        registry.addInterceptor(localeChangeInterceptor)
+                .addPathPatterns("/**");
+
+    }
+
+//    @Bean
+//    public LocaleResolver localeResolver() {
+    // TODO SessionLocaleResolver kết hợp với request param
+    // TODO AcceptHeaderLocaleResolver kết hợp với request headers
+//        SessionLocaleResolver resolver =
+//                new SessionLocaleResolver();
+//
+//        resolver.setDefaultLocale(Locale.ENGLISH);
+//
+//        return resolver;
+//    }
+
+    @Bean
+    public LocaleResolver localeResolver() {
+        SessionLocaleResolver resolver =
+                new SessionLocaleResolver();
+
+        resolver.setDefaultLocale(Locale.ENGLISH);
+
+        return resolver;
     }
 }

@@ -6,6 +6,7 @@ import codegym.vn.model.UploadFile;
 import codegym.vn.model.User;
 import codegym.vn.validators.UserValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,9 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,6 +33,8 @@ public class HomeController {
 
 
     private final UserValidator userValidator;
+
+    private final MessageSource messageSource;
 
 //    @InitBinder("user")
 //    public void initBinder(WebDataBinder webDataBinder) {
@@ -70,6 +75,9 @@ public class HomeController {
                 break;
             }
         }
+        modelAndView.addObject("welcome_message", messageSource.getMessage("welcome", new String[]{"Nguyen Tien Dat"}, Locale.ENGLISH));
+
+        ResourceBundle.getBundle("message_vi").getString("welcome");
         return modelAndView;
     }
 
@@ -122,5 +130,16 @@ public class HomeController {
     public String uploadFile(@ModelAttribute("upload") UploadFile uploadfile) throws IOException {
         FileCopyUtils.copy(uploadfile.getFile().getBytes(), new File("/Users/trinhhuong/Desktop/test.png" + uploadfile.getFile().getName()));
         return "upload successfully";
+    }
+
+    @GetMapping("/get-message")
+    @ResponseBody
+    public String getMessage(Locale locale,HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+
+        System.out.println("Session ID: " + session.getId());
+        System.out.println(locale.toLanguageTag());
+        return messageSource.getMessage("welcome", null, locale);
     }
 }
