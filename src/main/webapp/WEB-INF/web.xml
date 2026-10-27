@@ -8,6 +8,11 @@
             http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
         version="4.0">
 
+  <!--
+    DispatcherServlet mac dinh nap /WEB-INF/dispatcher-servlet.xml theo quy uoc
+    [servlet-name]-servlet.xml. Day la context DUY NHAT cua ung dung (khong tach
+    root/servlet) - nap toan bo bean web + nghiep vu + persistence.
+  -->
   <servlet>
     <servlet-name>dispatcher</servlet-name>
 
@@ -43,4 +48,8 @@
     <filter-name>encodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
 </web-app>

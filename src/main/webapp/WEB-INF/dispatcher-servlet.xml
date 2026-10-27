@@ -15,23 +15,19 @@
            http://www.springframework.org/schema/mvc
            https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
+    <!--
+      Mot context duy nhat cho toan ung dung (mo hinh don gian, phu hop app 1 dispatcher).
+      Component scan ca base-package codegym.vn: nap @Controller, @Service,
+      @Repository, @Component (aspect), va ca @Configuration (AppConfig, PersistenceConfig).
+      Nho vay AppConfig (@EnableWebMvc, i18n, view, upload) va PersistenceConfig
+      (DataSource, JPA, transaction) deu duoc nap trong cung context.
+      Aspect (vd Logging nham controller) nam chung context voi controller va
+      @EnableAspectJAutoProxy nen AOP proxy ap dung binh thuong.
+    -->
     <context:component-scan base-package="codegym.vn"/>
 
-    <mvc:annotation-driven/>
-
-    <mvc:interceptors>
-        <mvc:interceptor>
-            <mvc:mapping path="/**"/>
-            <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-                <property name="paramName" value="lang"/>
-            </bean>
-        </mvc:interceptor>
-    </mvc:interceptors>
-
-<!--    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
-<!--        <property name="prefix" value="/WEB-INF/views/"/>-->
-<!--        <property name="suffix" value=".jsp"/>-->
-<!--    </bean>-->
+    <!-- Phuc vu static resource (CSS/JS/anh) vi DispatcherServlet map "/" -->
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
 
     <bean id="templateResolver"
           class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
