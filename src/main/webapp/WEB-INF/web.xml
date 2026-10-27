@@ -9,9 +9,9 @@
         version="4.0">
 
   <!--
-    DispatcherServlet mac dinh nap /WEB-INF/dispatcher-servlet.xml theo quy uoc
-    [servlet-name]-servlet.xml. Day la context DUY NHAT cua ung dung (khong tach
-    root/servlet) - nap toan bo bean web + nghiep vu + persistence.
+    DispatcherServlet mặc định nạp /WEB-INF/dispatcher-servlet.xml theo quy ước
+    [servlet-name]-servlet.xml. Đây là context duy nhất của ứng dụng (không tách
+    root/servlet) - nạp toàn bộ bean web + nghiệp vụ + persistence.
   -->
   <servlet>
     <servlet-name>dispatcher</servlet-name>
@@ -46,6 +46,36 @@
 
   <filter-mapping>
     <filter-name>encodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!--
+    Spring Security filter chain.
+    DelegatingFilterProxy ủy quyền cho bean 'springSecurityFilterChain' (do
+    @EnableWebSecurity tạo). Mặc định filter này tìm bean trong root WebApplicationContext,
+    nhưng ứng dụng không có root context (ContextLoaderListener đã được gỡ bỏ có chủ đích -
+    chỉ có một context nằm trong DispatcherServlet 'dispatcher').
+
+    Do đó dùng init-param 'contextAttribute' trỏ tới attribute context của servlet
+    'dispatcher' (FrameworkServlet.CONTEXT.<servlet-name>) để filter tra bean security
+    trong đúng context - giữ nguyên mô hình một context.
+
+    filter-mapping đặt sau encodingFilter để CharacterEncodingFilter chạy trước.
+  -->
+  <filter>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <filter-class>
+      org.springframework.web.filter.DelegatingFilterProxy
+    </filter-class>
+
+    <init-param>
+      <param-name>contextAttribute</param-name>
+      <param-value>org.springframework.web.servlet.FrameworkServlet.CONTEXT.dispatcher</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>springSecurityFilterChain</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 

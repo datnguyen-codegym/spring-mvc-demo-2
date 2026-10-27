@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Cau hinh tang web/MVC (message converters, i18n, view, upload).
- * Cau hinh persistence (DataSource, JPA, transaction) nam o {@link PersistenceConfig}.
+ * Cấu hình tầng web/MVC (message converters, i18n, view, upload).
+ * Cấu hình persistence (DataSource, JPA, transaction) nằm ở {@link PersistenceConfig}.
  */
 @Configuration
 @EnableWebMvc

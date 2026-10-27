@@ -19,12 +19,12 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
- * Cau hinh tang persistence (DataSource, JPA/Hibernate, transaction).
- * Tach rieng khoi {@link AppConfig} (von chi lo phan web/MVC) de ro trach nhiem.
+ * Cấu hình tầng persistence (DataSource, JPA/Hibernate, transaction).
+ * Tách riêng khỏi {@link AppConfig} (vốn chỉ lo phần web/MVC) để rõ trách nhiệm.
  *
- * Gia tri ket noi DB doc tu application.properties, uu tien override bang
- * bien moi truong DB_* (DB_DRIVER, DB_URL, DB_USERNAME, DB_PASSWORD).
- * KHONG hardcode password trong source.
+ * Giá trị kết nối DB đọc từ application.properties, ưu tiên override bằng
+ * biến môi trường DB_* (DB_DRIVER, DB_URL, DB_USERNAME, DB_PASSWORD).
+ * Không hardcode password trong source.
  */
 @Configuration
 @EnableTransactionManagement
@@ -53,7 +53,7 @@ public class PersistenceConfig {
     @Value("${hibernate.hbm2ddl.auto:update}")
     private String hibernateHbm2ddl;
 
-    // Can thiet de phan giai placeholder ${...} cho cac field @Value o tren.
+    // Cần thiết để phân giải placeholder ${...} cho các field @Value ở trên.
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();

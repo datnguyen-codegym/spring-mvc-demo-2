@@ -16,17 +16,18 @@
            https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <!--
-      Mot context duy nhat cho toan ung dung (mo hinh don gian, phu hop app 1 dispatcher).
-      Component scan ca base-package codegym.vn: nap @Controller, @Service,
-      @Repository, @Component (aspect), va ca @Configuration (AppConfig, PersistenceConfig).
-      Nho vay AppConfig (@EnableWebMvc, i18n, view, upload) va PersistenceConfig
-      (DataSource, JPA, transaction) deu duoc nap trong cung context.
-      Aspect (vd Logging nham controller) nam chung context voi controller va
-      @EnableAspectJAutoProxy nen AOP proxy ap dung binh thuong.
+      Một context duy nhất cho toàn ứng dụng (mô hình đơn giản, phù hợp ứng dụng
+      một dispatcher). Component scan base-package codegym.vn: nạp @Controller,
+      @Service, @Repository, @Component (aspect) và cả @Configuration
+      (AppConfig, PersistenceConfig).
+      Nhờ vậy AppConfig (@EnableWebMvc, i18n, view, upload) và PersistenceConfig
+      (DataSource, JPA, transaction) đều được nạp trong cùng context.
+      Aspect (ví dụ Logging nhắm controller) nằm chung context với controller và
+      @EnableAspectJAutoProxy nên AOP proxy áp dụng bình thường.
     -->
     <context:component-scan base-package="codegym.vn"/>
 
-    <!-- Phuc vu static resource (CSS/JS/anh) vi DispatcherServlet map "/" -->
+    <!-- Phục vụ static resource (CSS/JS/ảnh) vì DispatcherServlet map "/" -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
 
     <bean id="templateResolver"
