@@ -39,6 +39,8 @@ public class CustomUserPrincipal implements UserDetails {
         return authorities;
     }
 
+    public Long getUserId() { return appUser.getId();};
+
     @Override
     public String getPassword() {
         return appUser.getPassword();

@@ -1,10 +1,13 @@
 package codegym.vn.controller;
 
 import codegym.vn.entity.Customer;
+import codegym.vn.security.CustomUserPrincipal;
 import codegym.vn.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +31,9 @@ public class CustomerController {
     @ResponseBody
     @GetMapping(value = "/get-all",
           produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public List<Customer> getCustomers() {
+    public List<Customer> getCustomers(@AuthenticationPrincipal CustomUserPrincipal user) {
+        System.out.println(((CustomUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId());
+
         return customerService.getAll();
     }
 

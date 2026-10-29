@@ -1,5 +1,6 @@
 package codegym.vn.security;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -7,6 +8,7 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,7 +35,7 @@ public class SecurityConfig {
      */
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider(
-            UserDetailsService userDetailsService,
+            @Qualifier(value = "customUserDetailsService") UserDetailsService userDetailsService,
             PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
@@ -54,12 +56,13 @@ public class SecurityConfig {
 
         http
                 .authenticationProvider(daoAuthenticationProvider)
-                .authorizeRequests()
-                    .anyRequest().authenticated()
-                .and()
+                .authorizeRequests().antMatchers("/customer/**").hasAuthority("USER_ROLE").and()
+                .authorizeRequests().anyRequest().authenticated().and()
                 // HTTP Basic cho API stateless.
-                .httpBasic()
-                .and()
+                .httpBasic().and()
+                .sessionManagement(
+                        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
                 // Tắt form login: chỉ dùng HTTP Basic.
                 .formLogin().disable()
                 // Tắt CSRF: API stateless dùng HTTP Basic, không dùng session cookie cho form.
