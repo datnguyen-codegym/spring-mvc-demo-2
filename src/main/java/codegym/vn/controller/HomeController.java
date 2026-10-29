@@ -75,9 +75,9 @@ public class HomeController {
                 break;
             }
         }
-        modelAndView.addObject("welcome_message", messageSource.getMessage("welcome", new String[]{"Nguyen Tien Dat"}, Locale.ENGLISH));
+//        modelAndView.addObject("welcome_message", messageSource.getMessage("welcome", new String[]{"Nguyen Tien Dat"}, Locale.ENGLISH));
 
-        ResourceBundle.getBundle("message_vi").getString("welcome");
+//        ResourceBundle.getBundle("message_vi").getString("welcome");
         return modelAndView;
     }
 
